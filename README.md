@@ -9,8 +9,9 @@ Local first Note Taking app with auto tagging and semantic search
 ```bash
 # usng npm
 npm run tauri dev
-# using bun
-bunx tauri dev
+
+# and in another terminal
+npm run dev
 ```
 
 ## Roadmap
