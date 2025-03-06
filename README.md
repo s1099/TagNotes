@@ -15,8 +15,8 @@ bunx tauri dev
 
 ## Roadmap
 
-- [] Basic note taking with markdown
-- [] Saving notes to filesystem
-- [] Tagging
-- [] Note folders
-- [] Semantic search
+- [ ] Basic note taking with markdown
+- [ ] Saving notes to filesystem
+- [ ] Tagging
+- [ ] Note folders
+- [ ] Semantic search
