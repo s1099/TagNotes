@@ -34,7 +34,7 @@
 
 <button
   aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-  class="flex items-center justify-center p-2 rounded-full border-2"
+  class="flex items-center justify-center p-2 rounded-full border-2 bg-white dark:bg-black"
   onclick={toggleTheme}
 >
   {#if isDark}

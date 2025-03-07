@@ -18,8 +18,9 @@ If vite dev server launches on different port then edit `build.devPath` in src-t
 
 ## Roadmap
 
-- [ ] Basic note taking with markdown
+- [x] Basic note taking
+- [ ] Markdown
 - [ ] Saving notes to filesystem
-- [ ] Tagging
+- [ ] Auto tagging
 - [ ] Note folders
 - [ ] Semantic search
