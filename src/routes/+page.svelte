@@ -1,41 +1,39 @@
 <script lang="ts">
   import TagFilter from '$lib/components/tag-filter.svelte';
   import NoteCard from '$lib/components/note-card.svelte';
-
+  import { notesStore } from '$lib/stores/notes.svelte';
   import { Button } from '$lib/components/ui/button';
   import { Filter } from 'lucide-svelte';
   import { goto } from '$app/navigation';
   import type { Note } from '$lib/types';
 
-  let notes = $state<Note[]>([
-    {
-      id: '1',
-      title: 'aaaaaaaaaaaa',
-      content: 'eeeeeeeeeeeeeeee',
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      tags: []
-    },
-    {
-      id: '2',
-      title: 'aaaaaaa',
-      content: 'eeeeeeeeeeeeeee',
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      tags: []
-    },
-    {
-      id: '3',
-      title: 'aaaaaaa',
-      content: 'eeeeeeeeeeeeee',
-      updatedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      tags: ['e']
-    }
-  ]);
-  let tags = $state(['e', 'q', 'w']);
+  const { getNoteIds, getNote } = notesStore;
+
   let tagSelectorOpen = $state(false);
-  let selectedTags = $state(['q']);
+  let selectedTags = $state<string[]>([]);
+
+  const noteIds = getNoteIds();
+  const allNotes = noteIds.map((id) => getNote(id)).filter(Boolean) as Note[];
+
+  const tagSet = new Set<string>();
+  allNotes.forEach((note) => {
+    note.tags?.forEach((tag) => tagSet.add(tag));
+  });
+  const tags = Array.from(tagSet);
+
+  const notes = $derived(
+    selectedTags.length > 0
+      ? allNotes.filter((note) => selectedTags.some((tag) => note.tags?.includes(tag)))
+      : allNotes
+  );
+
+  function tagSelect(tag: string) {
+    if (selectedTags.includes(tag)) {
+      selectedTags = selectedTags.filter((t) => t !== tag);
+    } else {
+      selectedTags = [...selectedTags, tag];
+    }
+  }
 </script>
 
 <main class="container mx-auto p-4">
@@ -47,16 +45,23 @@
           variant="outline"
           size="icon"
           onclick={() => (tagSelectorOpen = !tagSelectorOpen)}
-          aria-label="Filter tag"
+          aria-label="Filter by tags"
         >
           <Filter class="size-6" />
+          {#if selectedTags.length > 0}
+            <span
+              class="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full size-4 text-xs"
+            >
+              {selectedTags.length} 
+            </span>
+          {/if}
         </Button>
         {#if tagSelectorOpen}
           <TagFilter
             {tags}
             {selectedTags}
             onClose={() => (tagSelectorOpen = false)}
-            onTagSelect={(tag: any) => console.log(tag)}
+            onTagSelect={tagSelect}
           />
         {/if}
       </div>

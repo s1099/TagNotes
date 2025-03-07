@@ -2,35 +2,23 @@ import { writable, derived, get } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import type { Note } from '$lib/types';
 
-function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-  return (...args: Parameters<T>) => {
-    if (timeout) clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-}
-
 interface NotesStore {
   subscribe: Writable<Note[]>['subscribe'];
   tags: Writable<string[]>;
   getNote: (id: string) => Note | null;
-  createNote: (input: { title: string; content: string; tags: string[] }) => Promise<Note>;
-  updateNote: (updatedNote: Partial<Note> & { id: string }) => Promise<Note>;
-  deleteNote: (id: string) => Promise<void>;
+  createNote: (input: { title: string; content: string; tags: string[] }) => Note;
+  updateNote: (updatedNote: Partial<Note> & { id: string }) => Note;
+  deleteNote: (id: string) => void;
   addTag: (tag: string) => void;
   removeTag: (tag: string) => void;
+  getNoteIds: () => string[];
 }
 
 function createNotesStore(): NotesStore {
-  // Create the writable stores
   const notesStore = writable<Note[]>([]);
   const tagsStore = writable<string[]>([]);
   const isLoaded = writable(false);
 
-  // Load initial data
   try {
     const storedNotes = localStorage.getItem('notes');
     if (storedNotes) {
@@ -47,29 +35,26 @@ function createNotesStore(): NotesStore {
     isLoaded.set(true);
   }
 
-  // Create debounced save functions
-  const saveNotes = debounce((updatedNotes: Note[]) => {
+  const saveNotes = (updatedNotes: Note[]) => {
     try {
       localStorage.setItem('notes', JSON.stringify(updatedNotes));
     } catch (error) {
       console.error('Error saving notes to localStorage:', error);
     }
-  }, 500);
+  };
 
-  const saveTags = debounce((updatedTags: string[]) => {
+  const saveTags = (updatedTags: string[]) => {
     try {
       localStorage.setItem('tags', JSON.stringify(updatedTags));
     } catch (error) {
       console.error('Error saving tags to localStorage:', error);
     }
-  }, 500);
+  };
 
-  // Subscribe to notes changes to auto-save
   const unsubscribeNotes = notesStore.subscribe((notes) => {
     if (get(isLoaded)) {
       saveNotes(notes);
 
-      // Update tags
       const allTags = Array.from(new Set(notes.flatMap((note) => note.tags))).sort();
       const currentTags = get(tagsStore);
       if (JSON.stringify(allTags) !== JSON.stringify(currentTags)) {
@@ -79,17 +64,12 @@ function createNotesStore(): NotesStore {
     }
   });
 
-  // Store methods
   function getNote(id: string): Note | null {
     const notes = get(notesStore);
     return notes.find((note) => note.id === id) || null;
   }
 
-  async function createNote(input: {
-    title: string;
-    content: string;
-    tags: string[];
-  }): Promise<Note> {
+  function createNote(input: { title: string; content: string; tags: string[] }): Note {
     const now = new Date().toISOString();
     const newNote: Note = {
       id: crypto.randomUUID(),
@@ -102,7 +82,7 @@ function createNotesStore(): NotesStore {
     return newNote;
   }
 
-  async function updateNote(updatedNote: Partial<Note> & { id: string }): Promise<Note> {
+  function updateNote(updatedNote: Partial<Note> & { id: string }): Note {
     const now = new Date().toISOString();
     const currentNotes = get(notesStore);
     const existingNote = currentNotes.find((note) => note.id === updatedNote.id);
@@ -124,7 +104,7 @@ function createNotesStore(): NotesStore {
     return updated;
   }
 
-  async function deleteNote(id: string): Promise<void> {
+  function deleteNote(id: string): void {
     notesStore.update((notes) => notes.filter((note) => note.id !== id));
   }
 
@@ -138,10 +118,7 @@ function createNotesStore(): NotesStore {
   }
 
   function removeTag(tagToRemove: string): void {
-    // Remove tag from the tags list
     tagsStore.update((tags) => tags.filter((tag) => tag !== tagToRemove));
-
-    // Also remove this tag from all notes that have it
     notesStore.update((notes) => {
       const updatedNotes = notes.map((note) => {
         if (note.tags.includes(tagToRemove)) {
@@ -157,8 +134,11 @@ function createNotesStore(): NotesStore {
       return updatedNotes;
     });
   }
+  function getNoteIds(): string[] {
+    const notes = get(notesStore);
+    return notes.map((note) => note.id);
+  }
 
-  // Return the store interface
   return {
     subscribe: notesStore.subscribe,
     tags: tagsStore,
@@ -167,7 +147,8 @@ function createNotesStore(): NotesStore {
     updateNote,
     deleteNote,
     addTag,
-    removeTag
+    removeTag,
+    getNoteIds
   };
 }
 
