@@ -6,6 +6,7 @@
   import { Filter } from 'lucide-svelte';
   import { goto } from '$app/navigation';
   import type { Note } from '$lib/types';
+  import ThemeSwitcher from '$lib/components/theme-switcher.svelte';
 
   const { getNoteIds, getNote } = notesStore;
 
@@ -52,7 +53,7 @@
             <span
               class="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full size-4 text-xs"
             >
-              {selectedTags.length} 
+              {selectedTags.length}
             </span>
           {/if}
         </Button>
@@ -86,4 +87,7 @@
       {/each}
     </div>
   {/if}
+  <div class="fixed bottom-4 right-4 z-10">
+    <ThemeSwitcher />
+  </div>
 </main>
