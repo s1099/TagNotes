@@ -67,7 +67,7 @@
         {/if}
       </div>
       <Button variant="defaultinv" onclick={() => goto('/note/new')}>New Note</Button>
-    </div>  
+    </div>
   </div>
 
   {#if notes.length === 0}

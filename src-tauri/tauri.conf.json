@@ -56,10 +56,12 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 700,
         "resizable": true,
         "title": "TagNotes",
-        "width": 800
+        "width": 1000,
+        "decorations": false,
+        "transparent": true
       }
     ]
   }

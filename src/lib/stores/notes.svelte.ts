@@ -17,52 +17,22 @@ interface NotesStore {
 function createNotesStore(): NotesStore {
   const notesStore = writable<Note[]>([]);
   const tagsStore = writable<string[]>([]);
-  const isLoaded = writable(false);
 
-  try {
-    const storedNotes = localStorage.getItem('notes');
-    if (storedNotes) {
-      notesStore.set(JSON.parse(storedNotes));
-    }
-
-    const storedTags = localStorage.getItem('tags');
-    if (storedTags) {
-      tagsStore.set(JSON.parse(storedTags));
-    }
-  } catch (error) {
-    console.error('Error loading from localstore:', error);
-  } finally {
-    isLoaded.set(true);
-  }
-
-  const saveNotes = (updatedNotes: Note[]) => {
+  if (typeof window !== 'undefined') {
     try {
-      localStorage.setItem('notes', JSON.stringify(updatedNotes));
-    } catch (error) {
-      console.error('Error saving notes to localStorage:', error);
-    }
-  };
-
-  const saveTags = (updatedTags: string[]) => {
-    try {
-      localStorage.setItem('tags', JSON.stringify(updatedTags));
-    } catch (error) {
-      console.error('Error saving tags to localStorage:', error);
-    }
-  };
-
-  const unsubscribeNotes = notesStore.subscribe((notes) => {
-    if (get(isLoaded)) {
-      saveNotes(notes);
-
-      const allTags = Array.from(new Set(notes.flatMap((note) => note.tags))).sort();
-      const currentTags = get(tagsStore);
-      if (JSON.stringify(allTags) !== JSON.stringify(currentTags)) {
-        tagsStore.set(allTags);
-        saveTags(allTags);
+      const storedNotes = localStorage.getItem('notes');
+      if (storedNotes) {
+        notesStore.set(JSON.parse(storedNotes));
       }
+
+      const storedTags = localStorage.getItem('tags');
+      if (storedTags) {
+        tagsStore.set(JSON.parse(storedTags));
+      }
+    } catch (error) {
+      console.error('Error loading from localStorage:', error);
     }
-  });
+  }
 
   function getNote(id: string): Note | null {
     const notes = get(notesStore);
@@ -134,6 +104,7 @@ function createNotesStore(): NotesStore {
       return updatedNotes;
     });
   }
+
   function getNoteIds(): string[] {
     const notes = get(notesStore);
     return notes.map((note) => note.id);
