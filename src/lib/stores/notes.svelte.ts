@@ -36,6 +36,22 @@ function createNotesStore(): NotesStore {
     } catch (error) {
       console.error("Error loading from localStorage:", error);
     }
+
+    notesStore.subscribe((notes) => {
+      try {
+        localStorage.setItem("notes", JSON.stringify(notes));
+      } catch (error) {
+        console.error("Error saving notes:", error);
+      }
+    });
+
+    tagsStore.subscribe((tags) => {
+      try {
+        localStorage.setItem("tags", JSON.stringify(tags));
+      } catch (error) {
+        console.error("Error saving tags:", error);
+      }
+    });
   }
 
   function getNote(id: string): Note | null {

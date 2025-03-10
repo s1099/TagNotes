@@ -22,7 +22,7 @@
       <div
         class="text-sm text-muted-foreground line-clamp-6 hover:after:opacity-0 group-hover:after:opacity-0"
       >
-        {note.content || 'No content'}
+        {note.content || 'Empty Note'}
       </div>
     </CardContent>
 
