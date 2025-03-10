@@ -39,10 +39,10 @@
   }
 </script>
 
-<main class="container mx-auto p-4">
+<main class="w-full px-8 py-6">
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold">Notes</h1>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 z-10">
       <div class="relative">
         <Button
           variant="outline"
