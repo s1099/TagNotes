@@ -24,7 +24,9 @@
 
   const notes = $derived(
     selectedTags.length > 0
-      ? allNotes.filter((note) => selectedTags.some((tag) => note.tags?.includes(tag)))
+      ? allNotes.filter((note) =>
+          selectedTags.some((tag) => note.tags?.includes(tag))
+        )
       : allNotes
   );
 
@@ -66,7 +68,9 @@
           />
         {/if}
       </div>
-      <Button variant="defaultinv" onclick={() => goto('/note/new')}>New Note</Button>
+      <Button variant="defaultinv" onclick={() => goto("/note/new")}
+        >New Note</Button
+      >
     </div>
   </div>
 
@@ -75,10 +79,10 @@
       <h2 class="text-2xl font-semibold mb-2">No notes found</h2>
       <p class="text-muted-foreground mb-4">
         {selectedTags.length > 0
-          ? 'Try changing your tag filters or creating a new note'
-          : 'Create a note to get started'}
+          ? "Try changing your tag filters or creating a new note"
+          : "Create a note to get started"}
       </p>
-      <Button onclick={() => goto('/note/new')}>Create your first Note</Button>
+      <Button onclick={() => goto("/note/new")}>Create your first Note</Button>
     </div>
   {:else}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-5">

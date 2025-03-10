@@ -7,11 +7,7 @@ Local first Note Taking app with auto tagging and semantic search
 ## Running
 
 ```bash
-npm i
-npm run tauri dev
-
-# and in another terminal
-npm run dev
+bun run tauri dev
 ```
 
 If vite dev server launches on different port then edit `build.devPath` in src-tauri\tauri.conf.json accordingly

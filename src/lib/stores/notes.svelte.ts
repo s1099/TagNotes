@@ -1,12 +1,16 @@
-import { writable, derived, get } from 'svelte/store';
-import type { Writable } from 'svelte/store';
-import type { Note } from '$lib/types';
+import { writable, get } from "svelte/store";
+import type { Writable } from "svelte/store";
+import type { Note } from "../types";
 
 interface NotesStore {
-  subscribe: Writable<Note[]>['subscribe'];
+  subscribe: Writable<Note[]>["subscribe"];
   tags: Writable<string[]>;
   getNote: (id: string) => Note | null;
-  createNote: (input: { title: string; content: string; tags: string[] }) => Note;
+  createNote: (input: {
+    title: string;
+    content: string;
+    tags: string[];
+  }) => Note;
   updateNote: (updatedNote: Partial<Note> & { id: string }) => Note;
   deleteNote: (id: string) => void;
   addTag: (tag: string) => void;
@@ -18,19 +22,19 @@ function createNotesStore(): NotesStore {
   const notesStore = writable<Note[]>([]);
   const tagsStore = writable<string[]>([]);
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     try {
-      const storedNotes = localStorage.getItem('notes');
+      const storedNotes = localStorage.getItem("notes");
       if (storedNotes) {
         notesStore.set(JSON.parse(storedNotes));
       }
 
-      const storedTags = localStorage.getItem('tags');
+      const storedTags = localStorage.getItem("tags");
       if (storedTags) {
         tagsStore.set(JSON.parse(storedTags));
       }
     } catch (error) {
-      console.error('Error loading from localStorage:', error);
+      console.error("Error loading from localStorage:", error);
     }
   }
 
@@ -39,13 +43,17 @@ function createNotesStore(): NotesStore {
     return notes.find((note) => note.id === id) || null;
   }
 
-  function createNote(input: { title: string; content: string; tags: string[] }): Note {
+  function createNote(input: {
+    title: string;
+    content: string;
+    tags: string[];
+  }): Note {
     const now = new Date().toISOString();
     const newNote: Note = {
       id: crypto.randomUUID(),
       ...input,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
 
     notesStore.update((notes) => [newNote, ...notes]);
@@ -55,7 +63,9 @@ function createNotesStore(): NotesStore {
   function updateNote(updatedNote: Partial<Note> & { id: string }): Note {
     const now = new Date().toISOString();
     const currentNotes = get(notesStore);
-    const existingNote = currentNotes.find((note) => note.id === updatedNote.id);
+    const existingNote = currentNotes.find(
+      (note) => note.id === updatedNote.id
+    );
 
     if (!existingNote) {
       throw new Error(`Note with ID ${updatedNote.id} not found`);
@@ -64,7 +74,7 @@ function createNotesStore(): NotesStore {
     const updated = {
       ...existingNote,
       ...updatedNote,
-      updatedAt: now
+      updatedAt: now,
     };
 
     notesStore.update((notes) =>
@@ -95,7 +105,7 @@ function createNotesStore(): NotesStore {
           return {
             ...note,
             tags: note.tags.filter((tag) => tag !== tagToRemove),
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           };
         }
         return note;
@@ -119,7 +129,7 @@ function createNotesStore(): NotesStore {
     deleteNote,
     addTag,
     removeTag,
-    getNoteIds
+    getNoteIds,
   };
 }
 

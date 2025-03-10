@@ -1,7 +1,7 @@
 <script>
   import { Calendar } from 'lucide-svelte';
-  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '$lib/components/ui/card';
-  import { Badge } from '$lib/components/ui/badge';
+  import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card';
+  import { Badge } from './ui/badge';
   import { formatDate } from '$lib/utils';
 
   export let note;
