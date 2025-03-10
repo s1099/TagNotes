@@ -1,12 +1,12 @@
 <script lang="ts">
-  import TagFilter from '$lib/components/tag-filter.svelte';
-  import NoteCard from '$lib/components/note-card.svelte';
-  import { notesStore } from '$lib/stores/notes.svelte';
-  import { Button } from '$lib/components/ui/button';
-  import { Filter } from 'lucide-svelte';
-  import { goto } from '$app/navigation';
-  import type { Note } from '$lib/types';
-  import ThemeSwitcher from '$lib/components/theme-switcher.svelte';
+  import TagFilter from "$lib/components/tag-filter.svelte";
+  import NoteCard from "$lib/components/note-card.svelte";
+  import { notesStore } from "$lib/stores/notes.svelte";
+  import { Button } from "$lib/components/ui/button";
+  import { Filter } from "lucide-svelte";
+  import { goto } from "$app/navigation";
+  import type { Note } from "$lib/types";
+  import ThemeSwitcher from "$lib/components/theme-switcher.svelte";
 
   const { getNoteIds, getNote } = notesStore;
 

@@ -9,7 +9,7 @@
 
 <a href={`/note/${note.id}`} class="block">
   <Card
-    class="h-[220px] overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer"
+    class="h-[220px] overflow-hidden transition-all duration-200 hover:shadow-md cursor-pointer bg-white/40 dark:bg-black/20"
   >
     <CardHeader class="pb-2">
       <CardTitle class="line-clamp-2 pb-2">{note.title || 'Untitled Note'}</CardTitle>
