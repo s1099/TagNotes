@@ -6,7 +6,7 @@
 <main class="w-screen h-screen bg-white/85 dark:bg-black/85">
   <div
     data-tauri-drag-region
-    class="absolute w-screen h-16"
+    class="absolute w-screen h-16 z-10"
     id="drag-region"
   ></div>
   {@render children()}
