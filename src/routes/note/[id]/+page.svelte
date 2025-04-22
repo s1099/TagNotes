@@ -80,18 +80,20 @@
 
   <div class="absolute top-24 bottom-0 left-0 right-0 p-8 pt-0">
     <div class="space-y-4">
-      <Input
-        type="text"
-        placeholder="Title"
-        bind:value={title}
-        class="font-bold border-none px-2 h-auto bg-transparent placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:ring-offset-0"
-        style="font-size: 2rem;"
-      />
+      <div class="title-transition" style:--title="title-{note?.id}">
+        <Input
+          type="text"
+          placeholder="Title"
+          bind:value={title}
+          class="font-bold border-none px-2 h-auto bg-transparent placeholder:text-muted-foreground/50 focus-visible:ring-0 focus-visible:ring-offset-0"
+          style="font-size: 2rem;"
+        />
+      </div>
     </div>
     <!-- TODO: make the page expand instead of the textbox -->
     <textarea
       bind:value={content}
-      class="w-full h-[calc(100vh-12rem)] p-3 rounded-md bg-transparent focus:outline-none resize-none overflow-y-auto"
+      class="w-full h-[calc(100vh-12rem)] p-3 rounded-md bg-transparent border focus:outline-none resize-none overflow-y-auto"
       placeholder="..."
       style="font-size: 1.25rem;"
     ></textarea>

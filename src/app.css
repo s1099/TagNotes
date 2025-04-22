@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
-body, html {background: transparent;}
+body,
+html {
+  background: transparent;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -126,4 +129,8 @@ body, html {background: transparent;}
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.title-transition {
+  view-transition-name: var(--title);
 }

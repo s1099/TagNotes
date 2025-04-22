@@ -19,7 +19,11 @@
   >
     <CardHeader class="pb-2">
       <CardTitle class="line-clamp-2 pb-2">
-        {note.title || "Untitled Note"}
+        <div class="space-y-4">
+          <div class="title-transition" style:--title="title-{note.id}">
+            {note.title || "Untitled Note"}
+          </div>
+        </div>
       </CardTitle>
       <div class="flex items-center text-xs text-muted-foreground">
         <Calendar class="h-3 w-3 mr-1" />
