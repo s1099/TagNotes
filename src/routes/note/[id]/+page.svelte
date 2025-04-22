@@ -91,8 +91,8 @@
     <!-- TODO: make the page expand instead of the textbox -->
     <textarea
       bind:value={content}
-      class="w-full h-[calc(100vh-12rem)] p-3 rounded-md bg-transparent border focus:outline-none resize-none overflow-y-auto"
-      placeholder="Note"
+      class="w-full h-[calc(100vh-12rem)] p-3 rounded-md bg-transparent focus:outline-none resize-none overflow-y-auto"
+      placeholder="..."
       style="font-size: 1.25rem;"
     ></textarea>
   </div>
